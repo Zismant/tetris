@@ -1,3 +1,7 @@
+body{
+    display: flex;
+}
+
 .game { 
     width: 400px;
     height: 800px;
@@ -5,6 +9,13 @@
     display: flex;
     flex-wrap: wrap;
     border: 7px solid green;
+
+}
+
+#btn {
+    width: 200px;
+    height: 100px;
+    margin-left: 50px;
 
 }
 
@@ -17,5 +28,9 @@
 
 .show {
     background-color:rgba(238, 11, 53, 0.76);
+}
+
+.bottom {
+    background-color:blue;
 }
 
