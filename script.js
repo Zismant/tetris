@@ -12,28 +12,22 @@ document.addEventListener('DOMContentLoaded', () => {
     const fildElemts = Array.from(game.querySelectorAll('.fildElem'));
     const btn = document.querySelector('#btn');
 
-
-
-
     // create L element 
     let roteteStateElement = 0;
-    let positionElement = 0;
-    let lElement = [];
+    let positionElement = 4;
+    const lElement = [
+        [1, 1 + cell, 1 + cell * 2, 2],
+        [cell, 1 + cell, 2 + cell, 2 + cell * 2],
+        [cell * 2,  1, cell + 1, cell * 2 + 1 ],
+        [cell,  cell * 2,  1 + cell * 2,  2 + cell * 2]
+    ];
+    let tetrisElement = lElement[roteteStateElement];
+    
     // let timerId = setInterval(moveDown, 1000);
 
-    function createElement() {
-        lElement = [
-            [positionElement, positionElement + cell, positionElement + cell * 2, positionElement + 1 + cell * 2],
-            [positionElement + cell, positionElement, positionElement + 1, positionElement + 2],
-            [positionElement, positionElement + 1, positionElement + cell + 1, cell * 2 + 1 + positionElement],
-            [positionElement + cell, positionElement + cell + 1, positionElement + cell + 2, positionElement + 2]
-        ];
+    
+   
 
-        tetrisElement = lElement;
-
-    }
-
-    let tetrisElement;
 
     document.addEventListener('keydown', (e) => {
         if (e.code == 'ArrowLeft' || e.code == 'KeyA') {
@@ -49,96 +43,132 @@ document.addEventListener('DOMContentLoaded', () => {
     
     btn.addEventListener('click', () => {
         // clearInterval(timerId);
-        splice();
-
+        // splice();
     });
 
     function moveLeft() {
+        clearElement();
         
-        if (tetrisElement[roteteStateElement].some(item => item % cell == 0)) {
-            return;
+        if (!tetrisElement.some(item => (item + positionElement) % cell == 0)) {
+        positionElement --;  
         }
-        positionElement--;
+        
         drawElement();
     }
-
     function moveRight() {
-
-        if (tetrisElement[roteteStateElement].some(item => (item - 9) % cell == 0)) {
-            return;
+        clearElement();
+        
+        if (!tetrisElement.some(item => (item + positionElement - 9) % cell == 0)) {
+            positionElement++;  
         }
-        positionElement++;
         drawElement();
+        
+    }
+    
+    function isLeft() {
+        return tetrisElement.some(item => (item + positionElement) % cell == 0);
+    }
+    function isRight() {
+        return tetrisElement.some(item => (item + positionElement + 1) % cell == 0);
+    }
 
+    function checkRotateCollision(pos) {
+        pos = pos || positionElement;
+
+        if ((pos + 1) % cell < 4) {
+            if (isRight()) { 
+                positionElement ++;
+                checkRotateCollision(pos);
+
+            }
+        }
+
+        else if (pos % cell > 5) {
+            if (isLeft()) {
+                positionElement --;
+                checkRotateCollision(pos);
+            }
+        }
+        
+    
     }
 
 
     function rotate() {
+        clearElement();
         roteteStateElement++;
         if (roteteStateElement == tetrisElement.length) {
             roteteStateElement = 0;
         }
+        tetrisElement = lElement[roteteStateElement];
+        checkRotateCollision();
         drawElement();
         
-
+        
     }
 
     function moveDown() {
-        positionElement += 10;
+        clearElement();
+
+        positionElement += cell;
         drawElement();
     }
 
     function clearElement() {
-        fildElemts.forEach(item => {
-            item.classList.remove('show');
+       tetrisElement.forEach(item => {
+            fildElemts[item + positionElement].classList.remove('show');
         });
     }
 
     function drawElement() {
-        clearElement();
-        createElement();
-        //left right collizion
-        // if (tetrisElement[roteteStateElement].some(item => item % 10 == 0)) {
-        //     positionElement++;
-        // } else if (tetrisElement[roteteStateElement].some(item => (item - 9) % 10 == 0)) {
-        //     positionElement--;
-        // }
+        
+        
+
+        
+  
         // bottom collizion
-        let collizionBottom = tetrisElement[roteteStateElement].some(item => item >= 190 && item < 200  ||
-            fildElemts[item + cell].matches('.bottom')
-             );
+        // let collizionBottom = tetrisElement[roteteStateElement].some(item => item >= 190 && item < 200  ||
+        //     fildElemts[item + cell].matches('.bottom')
+        //      );
 
 
-        if (collizionBottom ) {
+        // if (collizionBottom ) {
 
-            tetrisElement[roteteStateElement].forEach(item => {
+        //     tetrisElement[roteteStateElement].forEach(item => {
+        //         fildElemts[item].classList.add('bottom');
+        //         fildElemts[item].classList.remove('show');
+        //         positionElement = 0;
+        //         createElement();
+        //         return;
+        //     });
 
-                fildElemts[item].classList.add('bottom');
-                fildElemts[item].classList.remove('show');
-                positionElement = 0;
-                createElement();
-                return;
-            });
-
-        }
-        tetrisElement[roteteStateElement].forEach(item => {
-            fildElemts[item].classList.add('show');
+        // }
+       
+        tetrisElement.forEach(item => {
+            fildElemts[item + positionElement].classList.add('show');
         });
 
 
+        function collizion() {
+
+        }
+
+       
+        
 
     }
+
+
+    
 
     
    
 
-    function splice() {
-        fildElemts.splice(10, 180);
-        console.log(fildElemts.length);
+    // function splice() {
+    //     fildElemts.splice(10, 180);
+    //     console.log(fildElemts.length);
+    // }
 
-
-    }
-
-
-
+    drawElement();
+    
 });
