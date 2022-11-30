@@ -121,40 +121,35 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function drawElement() {
-        
-        
-
-        
+        collizionBottom();
   
-        // bottom collizion
-        // let collizionBottom = tetrisElement[roteteStateElement].some(item => item >= 190 && item < 200  ||
-        //     fildElemts[item + cell].matches('.bottom')
-        //      );
-
-
-        // if (collizionBottom ) {
-
-        //     tetrisElement[roteteStateElement].forEach(item => {
-        //         fildElemts[item].classList.add('bottom');
-        //         fildElemts[item].classList.remove('show');
-        //         positionElement = 0;
-        //         createElement();
-        //         return;
-        //     });
-
-        // }
+    
        
         tetrisElement.forEach(item => {
             fildElemts[item + positionElement].classList.add('show');
         });
 
-
-        function collizion() {
+        
+        
+        
+        
+    }
+    
+    function collizionBottom() {
+        let collizionBottomLeft = tetrisElement.some( item =>  (item + positionElement) > 189);
+        let collizionBottomRight = tetrisElement.some( item =>  (item + positionElement) < 200);
+        let collizionElement = collizionBottomLeft && collizionBottomRight ? false : tetrisElement.some(item => (fildElemts[item + positionElement + cell].matches('.bottom')));
+        if ( (collizionBottomLeft && collizionBottomRight) || collizionElement) {
+                tetrisElement.forEach(item => {
+                    fildElemts[item + positionElement].classList.add('bottom');
+                });
+                clearElement();
+                positionElement = 4;
+                tetrisElement = lElement[roteteStateElement];
+                drawElement();
+            return;
 
         }
-
-       
-        
 
     }
 
