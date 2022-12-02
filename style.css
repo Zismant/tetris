@@ -32,9 +32,29 @@ body{
     background-color: rgba(208, 211, 127, 0.833);
 }
 
-.show {
-    background-color:rgba(238, 11, 53, 0.76);
+
+
+.l {
+    background-color:rgba(235, 19, 37, 0.943);
 }
+
+.o {
+    background-color:rgba(19, 50, 2, 0.899);
+}
+
+.z {
+    background-color:rgba(11, 189, 212, 0.905);
+}
+
+.i {
+    background-color:rgba(0, 0, 0, 0.76);
+}
+
+.t {
+    background-color:rgba(204, 11, 238, 0.813);
+}
+
+
 
 .bottom {
     background-color:blue;

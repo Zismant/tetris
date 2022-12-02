@@ -62,16 +62,14 @@ document.addEventListener('DOMContentLoaded', () => {
     ];
 
     const elements = [lElement, oElement, zElement, iElement, tElement];
+    const colorElements = ['l', 'o', 'z', 'i', 't'];
 
     let roteteStateElement = random(0, 3);
     let positionElement = 4;
-    let tetrisElementStart = elements[random(0, elements.length - 1)];
-
-
+    let randomNumberElement = random(0, elements.length - 1);
+    let tetrisElementStart = elements[randomNumberElement];
     let tetrisElement = tetrisElementStart[roteteStateElement];
-    // let tetrisElement = elements[2][1];
-
-    // let timerId = setInterval(moveDown, 1000);
+    let timerId = setInterval(moveDown, 1000);
 
 
 
@@ -90,8 +88,15 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     btn.addEventListener('click', () => {
-        // clearInterval(timerId);
-        // splice();
+        if (timerId) {
+            clearInterval(timerId);
+            timerId = null;
+        }
+        else {
+            timerId = setInterval(moveDown, 1000);
+        }
+
+        
     });
 
     function random(min, max) {
@@ -176,7 +181,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function clearElement() {
         tetrisElement.forEach(item => {
-            fildElemts[item + positionElement].classList.remove('show');
+            fildElemts[item + positionElement].classList.remove(colorElements[randomNumberElement]);
         });
     }
 
@@ -186,7 +191,7 @@ document.addEventListener('DOMContentLoaded', () => {
             addScore();
 
             tetrisElement.forEach(item => {
-                fildElemts[item + positionElement].classList.add('show');
+                fildElemts[item + positionElement].classList.add(colorElements[randomNumberElement]);
             });
         }
       
@@ -208,7 +213,8 @@ document.addEventListener('DOMContentLoaded', () => {
             clearElement();
             positionElement = 4;
             roteteStateElement = random(0, 3);
-            tetrisElementStart = elements[random(0, elements.length - 1)];
+            randomNumberElement = random(0, elements.length - 1);
+            tetrisElementStart = elements[randomNumberElement];
             tetrisElement = tetrisElementStart[roteteStateElement];
             drawElement();
             return;
@@ -226,7 +232,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 score.textContent = scoreItem;
                 row.forEach(index => {
                     fildElemts[index].classList.remove('bottom');
-                    fildElemts[index].classList.remove('show');
+                    fildElemts[index].classList.remove(colorElements[randomNumberElement]);
+                    
                 });
                 const fildElemtsRemoved = fildElemts.splice(i, cell);
                 fildElemts = fildElemtsRemoved.concat(fildElemts);
@@ -237,19 +244,22 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function gameOver() {
-        for (let i = 0; i < 30; i++) {
+        for (let i = 0; i < 10; i++) {
             if (fildElemts[i].matches('.bottom')) {
                 
                 alert(`Game Over. Score: ${scoreItem}`);
                fildElemts.forEach(item => {
                 item.classList.remove('bottom');
-                item.classList.remove('show');
+                item.classList.remove(colorElements[randomNumberElement]);
                });
                 
                 positionElement = 4;
                 roteteStateElement = random(0, 3);
                 tetrisElementStart = elements[random(0, elements.length - 1)];
                 tetrisElement = tetrisElementStart[roteteStateElement];
+                scoreItem = 0;
+                score.textContent = scoreItem;
+                // clearInterval(timerId);
                 
                 return false;
             }
@@ -259,18 +269,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
 
     }
-
-
-
-
-
-
-
-    // function splice() {
-    //     fildElemts.splice(10, 180);
-    //     console.log(fildElemts.length);
-    // }
-
     drawElement();
+
 
 });
